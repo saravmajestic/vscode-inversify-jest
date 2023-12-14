@@ -1,45 +1,41 @@
 import "reflect-metadata";
-import * as path from "path";
-import Mocha from "mocha";
-import { glob } from "glob";
+import { runCLI } from "jest";
 
-export function run(): Promise<void> {
-  // Create the mocha test
-  const mocha = new Mocha({
-    ui: "tdd",
-    color: true,
-  });
-
-  const testsRoot = path.resolve(__dirname, "..");
-
-  const testSuite = "./suite/**/*.test.js";
-
-  console.log("testsRoot", testsRoot, testSuite);
-
-  return new Promise((resolve, reject) => {
-    glob(testSuite, { cwd: testsRoot })
-      .then((files: any[]) => {
-        //   if (err) {
-        //     return reject(err);
-        //   }
-
-        // Add files to the test suite
-        files.forEach((f: string) => mocha.addFile(path.resolve(testsRoot, f)));
-
-        try {
-          // Run the mocha test
-          mocha.run((failures) => {
-            if (failures > 0) {
-              reject(new Error(`${failures} tests failed.`));
-            } else {
-              resolve();
-            }
-          });
-        } catch (err) {
-          console.error(err);
-          reject(err);
-        }
-      })
-      .catch((err) => console.log(err));
-  });
+interface ITestRunner {
+  run(testsRoot: string, clb: (error?: Error, failures?: number) => void): void;
 }
+const path = require("path");
+
+const jestTestRunnerForVSCodeE2E: ITestRunner = {
+  run(
+    testsRoot: string,
+    reportTestResults: (error?: Error, failures?: number) => void
+  ): void {
+    const projectRootPath = process.cwd();
+    const config = path.join(projectRootPath, "jest.e2e.config.js");
+
+    runCLI({ config } as any, [projectRootPath])
+      .then((jestCliCallResult) => {
+        jestCliCallResult.results.testResults.forEach((testResult) => {
+          testResult.testResults
+            .filter((assertionResult) => assertionResult.status === "passed")
+            .forEach(({ ancestorTitles, title, status }) => {
+              console.info(`  ● ${ancestorTitles} > ${title} (${status})`);
+            });
+        });
+
+        jestCliCallResult.results.testResults.forEach((testResult) => {
+          if (testResult.failureMessage) {
+            console.error(testResult.failureMessage);
+          }
+        });
+
+        reportTestResults(undefined, jestCliCallResult.results.numFailedTests);
+      })
+      .catch((errorCaughtByJestRunner) => {
+        reportTestResults(errorCaughtByJestRunner, 0);
+      });
+  },
+};
+
+module.exports = jestTestRunnerForVSCodeE2E;
