@@ -1,5 +1,6 @@
 {
   "name": "vscode-inversify-jest",
+  "publisher": "saravmajestic",
   "displayName": "vscode-inversify-jest",
   "description": "",
   "version": "0.0.1",
@@ -14,28 +15,39 @@
   "contributes": {
     "commands": [
       {
-        "command": "vscode-inversify-jest.helloWorld",
-        "title": "Hello World"
+        "command": "extension.add",
+        "title": "DI: Add"
+      },
+      {
+        "command": "extension.remove",
+        "title": "DI: Remove"
       }
     ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
+    "compile": "rm -Rf out; tsc -p ./",
+    "watch": "rm -Rf out; tsc -watch -p ./",
+    "pretest": "rm -Rf out; npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.85.0",
+    "@types/assert": "^1.5.10",
     "@types/mocha": "^10.0.6",
     "@types/node": "18.x",
+    "@types/vscode": "^1.85.0",
     "@typescript-eslint/eslint-plugin": "^6.13.1",
     "@typescript-eslint/parser": "^6.13.1",
-    "eslint": "^8.54.0",
-    "typescript": "^5.3.2",
     "@vscode/test-cli": "^0.0.4",
-    "@vscode/test-electron": "^2.3.8"
+    "@vscode/test-electron": "^2.3.8",
+    "assert": "^2.1.0",
+    "eslint": "^8.54.0",
+    "typescript": "^5.3.2"
+  },
+  "dependencies": {
+    "inversify": "^6.0.2",
+    "inversify-binding-decorators": "^4.0.0",
+    "reflect-metadata": "^0.2.0"
   }
 }
