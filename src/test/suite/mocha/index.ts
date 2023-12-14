@@ -12,7 +12,7 @@ export function run(): Promise<void> {
 
   const testsRoot = path.resolve(__dirname, "..");
 
-  const testSuite = "./suite/**/*.test.js";
+  const testSuite = "./mocha/**/*.test.js";
 
   console.log("testsRoot", testsRoot, testSuite);
 

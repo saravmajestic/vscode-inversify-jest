@@ -5,8 +5,8 @@ import * as assert from "assert";
 import * as vscode from "vscode";
 // import * as myExtension from '../../extension';
 import { Container } from "inversify";
-import TYPES from "../../types";
-import { CommandsManager } from "../../commands/commands-manager";
+import { CommandsManager } from "../../../commands/commands-manager";
+import TYPES from "../../../types";
 
 suite("Extension Test Suite", () => {
   vscode.window.showInformationMessage("Start all tests.");

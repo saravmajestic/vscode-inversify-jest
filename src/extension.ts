@@ -30,7 +30,7 @@ export async function activate(context: vscode.ExtensionContext) {
   //   );
 
   const cmdManager = container.get<CommandsManager>(TYPES.CommandManager);
-  console.log("cmdManager", cmdManager);
+  console.log("cmdManager in extension.ts", cmdManager);
   cmdManager.registerCommands(context);
 
   return container;

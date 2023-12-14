@@ -30,10 +30,12 @@
     "watch": "rm -Rf out; tsc -watch -p ./",
     "pretest": "rm -Rf out; npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "test:jest": "testType=jest node ./out/test/runTest.js",
+    "test:mocha": "testType=mocha node ./out/test/runTest.js"
   },
   "devDependencies": {
     "@types/assert": "^1.5.10",
+    "@types/jest": "^29.5.11",
     "@types/mocha": "^10.0.6",
     "@types/node": "18.x",
     "@types/vscode": "^1.85.0",

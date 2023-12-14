@@ -1,5 +1,4 @@
 import * as path from "path";
-import * as cp from "child_process";
 
 import {
   downloadAndUnzipVSCode,
@@ -25,7 +24,10 @@ async function main() {
       // Use the specified `code` executable
       vscodeExecutablePath: vscodeExecutablePath,
       extensionDevelopmentPath: extensionDevelopmentPath,
-      extensionTestsPath: path.resolve(__dirname, "./suite/index.js"),
+      extensionTestsPath: path.resolve(
+        __dirname,
+        `./suite/${process.env.testType}/index.js`
+      ),
       version: version,
       launchArgs: [],
       extensionTestsEnv: {},
